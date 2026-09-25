@@ -65,8 +65,14 @@ function closeDrawers() {
 }
 document.querySelectorAll('input[name="result"]').forEach((r) => {
   if (r.value === getResult()) r.checked = true;
-  r.addEventListener('change', () => localStorage.setItem('tcs_result', r.value));
+    r.addEventListener('change', () => localStorage.setItem('tcs_result', r.value));
 });
+// reason box (settings drawer) — saved, shown on receipt
+const reasonInput = document.getElementById('reason-input');
+if (reasonInput) {
+  reasonInput.value = localStorage.getItem('tcs_reason') || '';
+  reasonInput.addEventListener('input', () => localStorage.setItem('tcs_reason', reasonInput.value));
+}
 
 // ---------- customize bundles ----------
 function addCustomBundle() {
@@ -286,7 +292,9 @@ function showReceipt() {
   $('r-amount').textContent = '$' + Number(state.bundle.price).toFixed(2);
   $('r-card').textContent = state.card;
   $('r-order').textContent = 'TCS-' + Math.random().toString(36).slice(2, 8).toUpperCase();
-  $('r-date').textContent = new Date().toLocaleString();
+    $('r-date').textContent = new Date().toLocaleString();
+  const reason = localStorage.getItem('tcs_reason') || '';
+  $('r-reason').textContent = reason || '—';
   show('view-receipt');
 }
 
