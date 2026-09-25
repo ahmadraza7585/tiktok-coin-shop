@@ -1,0 +1,14 @@
+# Render blueprint — deploys the shop as a free web service.
+# On Render: New > Blueprint > connect the repo containing this file.
+services:
+  - type: web
+    name: tiktok-coin-shop
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: COIN_USER
+        value: admin
+      - key: COIN_PASS
+        sync: false # you set the login password in the Render dashboard
