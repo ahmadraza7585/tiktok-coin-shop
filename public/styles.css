@@ -228,11 +228,8 @@ button { cursor: pointer; font-family: inherit; }
   position: relative;
   overflow: hidden;
 }
-.pay-card.master { background: linear-gradient(135deg, #eb001b, #f79e1b); }
-.pay-card.visa { background: linear-gradient(135deg, #1a1f71, #2f7de1); }
-.pay-card.paypal { background: linear-gradient(135deg, #5a2dbe, #9b30ff); }
-.pay-card.amex { background: linear-gradient(135deg, #0a7a4e, #2ecc71); }
-.pay-card .brand { font-weight: 800; letter-spacing: 2px; font-size: 15px; }
+
+.pay-card.easypaisa { background: linear-gradient(135deg, #0a7a2e, #35c759); } .pay-card.jazzcash { background: linear-gradient(135deg, #c81e2e, #f44336); } .pay-card.bank { background: linear-gradient(135deg, #0f2027, #2c5364); } .pay-card.paypal { background: linear-gradient(135deg, #003087, #009cde); } .pay-card .brand { font-weight: 800; letter-spacing: 2px; font-size: 15px; }
 .pay-card .chip {
   width: 44px; height: 32px; border-radius: 6px; margin: 12px 0;
   background: linear-gradient(135deg, #f6d365, #c8963e);
