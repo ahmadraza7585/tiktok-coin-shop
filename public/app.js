@@ -188,20 +188,21 @@ function renderProfile(p) {
 
 // ---------- bundles ----------
 function renderBundles() {
-  const all = DEFAULT_BUNDLES.concat(getCustomBundles());
-  $('bundle-grid').innerHTML = all.map((b, i) => `
+  const all = getCustomBundles();
+  $('bundle-grid').innerHTML = all.length ? all.map((b, i) => `
     <div class="bundle" onclick="selectBundle(${i})">
       <div class="coins">🪙</div>
       <div class="cnum">${b.coins}</div>
       <div class="price">$${Number(b.price).toFixed(2)}</div>
-    </div>`).join('');
+    </div>`).join('')
+    : '<p class="hint center">Koi bundle nahi hai — Customize Bundle se apna bundle banao.</p>';
 }
 function selectBundle(i) {
   if (!state.profile) {
     alert('Pehle TikTok username search karo');
     return;
   }
-  const all = DEFAULT_BUNDLES.concat(getCustomBundles());
+  const all = getCustomBundles();
   state.bundle = all[i];
   renderPayment();
   show('view-payment');
@@ -293,7 +294,9 @@ function showReceipt() {
   $('r-order').textContent = 'TCS-' + Math.random().toString(36).slice(2, 8).toUpperCase();
     $('r-date').textContent = new Date().toLocaleString();
   const reason = localStorage.getItem('tcs_reason') || '';
-  $('r-reason').textContent = reason || '—';
+  const rReason = $('r-reason');
+  rReason.textContent = reason || '—';
+  rReason.style.color = (result === 'Failed') ? '#ff8fa3' : '';
   show('view-receipt');
 }
 
