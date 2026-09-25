@@ -301,7 +301,7 @@ function showReceipt() {
   const reason = localStorage.getItem('tcs_reason') || '';
   const rReason = $('r-reason');
   rReason.textContent = reason || '—';
-  rReason.style.color = (result === 'Failed') ? '#ff8fa3' : '';
+  if (result === 'Failed') { rReason.style.cssText = 'color:#ff8fa3;background:rgba(255,90,120,.12);border:1px solid rgba(255,90,120,.55);border-radius:8px;padding:6px 10px;display:inline-block;'; } else { rReason.style.cssText = ''; }
   show('view-receipt');
 }
 
