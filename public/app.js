@@ -38,7 +38,9 @@ function fmt(n) {
 function pkr(n) {
   return '₨' + Math.round(Number(n) || 0).toLocaleString('en-US');
 }
-function esc(s) {
+function parseCoins(str) { const m = String(str).trim().toUpperCase().match(/^(\d+(?:\.\d+)?)([KM]?)$/); if (!m) return 0; let n = parseFloat(m[1]); if (m[2] === 'K') n *= 1000; if (m[2] === 'M') n *= 1000000; return Math.floor(n); } function fmtCoins(n) { return Math.floor(Number(n) || 0).toLocaleString('en-US'); } function esc(s) {
+
+  
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   }[c]));
@@ -78,7 +80,7 @@ if (reasonInput) {
 
 // ---------- customize bundles ----------
 function addCustomBundle() {
-  const coins = parseInt($('custom-coins').value, 10);
+  const coins = parseCoins($('custom-coins').value);
   const price = parseFloat($('custom-price').value);
   if (!coins || coins <= 0 || !(price > 0)) {
     alert('Coins aur price sahi likho');
@@ -103,7 +105,7 @@ function renderCustomList() {
   const list = getCustomBundles();
   $('custom-list').innerHTML = list.length
     ? '<p class="drawer-label">Tumhare bundles</p>' + list.map((b, i) =>
-        `<div class="custom-item"><span>🪙 ${b.coins} — ${pkr(b.price)}</span><button onclick="removeCustomBundle(${i})">✕</button></div>`
+        `<div class="custom-item"><span>🪙 ${fmtCoins(b.coins)} — ${pkr(b.price)}</span><button onclick="removeCustomBundle(${i})">✕</button></div>`
       ).join('')
     : '<p class="hint">Abhi koi custom bundle nahi hai.</p>';
 }
@@ -195,7 +197,7 @@ function renderBundles() {
   $('bundle-grid').innerHTML = all.length ? all.map((b, i) => `
     <div class="bundle" onclick="selectBundle(${i})">
       <div class="coins">🪙</div>
-      <div class="cnum">${b.coins}</div>
+      <div class="cnum">${fmtCoins(b.coins)}</div>
       <div class="price">${pkr(b.price)}</div>
     </div>`).join('')
     : '<p class="hint center">Koi bundle nahi hai — Customize Bundle se apna bundle banao.</p>';
@@ -227,7 +229,7 @@ function miniProfileHTML(p) {
 function renderPayment() {
   $('pay-profile').innerHTML = miniProfileHTML(state.profile);
   $('pay-summary').innerHTML =
-    `🪙 <b>${state.bundle.coins}</b> coins — <b>${pkr(state.bundle.price)}</b>`;
+    `🪙 <b>${fmtCoins(state.bundle.coins)}</b> coins — <b>${pkr(state.bundle.price)}</b>`;
   $('card-grid').innerHTML = CARDS.map((c) => `
     <div class="pay-card ${c.cls}">
       <div class="brand">${c.name}</div>
@@ -291,7 +293,7 @@ function showReceipt() {
   badge.textContent = label;
 
   $('r-profile').innerHTML = miniProfileHTML(state.profile);
-  $('r-coins').textContent = '🪙 ' + state.bundle.coins;
+  $('r-coins').textContent = '🪙 ' + fmtCoins(state.bundle.coins);
   $('r-amount').textContent = pkr(state.bundle.price);
   $('r-card').textContent = state.card;
   $('r-order').textContent = 'TCS-' + Math.random().toString(36).slice(2, 8).toUpperCase();
