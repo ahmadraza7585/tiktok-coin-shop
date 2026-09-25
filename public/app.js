@@ -35,6 +35,9 @@ function fmt(n) {
   if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
   return String(n);
 }
+function pkr(n) {
+  return '₨' + Math.round(Number(n) || 0).toLocaleString('en-US');
+}
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -100,7 +103,7 @@ function renderCustomList() {
   const list = getCustomBundles();
   $('custom-list').innerHTML = list.length
     ? '<p class="drawer-label">Tumhare bundles</p>' + list.map((b, i) =>
-        `<div class="custom-item"><span>🪙 ${b.coins} — $${Number(b.price).toFixed(2)}</span><button onclick="removeCustomBundle(${i})">✕</button></div>`
+        `<div class="custom-item"><span>🪙 ${b.coins} — ${pkr(b.price)}</span><button onclick="removeCustomBundle(${i})">✕</button></div>`
       ).join('')
     : '<p class="hint">Abhi koi custom bundle nahi hai.</p>';
 }
@@ -193,7 +196,7 @@ function renderBundles() {
     <div class="bundle" onclick="selectBundle(${i})">
       <div class="coins">🪙</div>
       <div class="cnum">${b.coins}</div>
-      <div class="price">$${Number(b.price).toFixed(2)}</div>
+      <div class="price">${pkr(b.price)}</div>
     </div>`).join('')
     : '<p class="hint center">Koi bundle nahi hai — Customize Bundle se apna bundle banao.</p>';
 }
@@ -224,14 +227,14 @@ function miniProfileHTML(p) {
 function renderPayment() {
   $('pay-profile').innerHTML = miniProfileHTML(state.profile);
   $('pay-summary').innerHTML =
-    `🪙 <b>${state.bundle.coins}</b> coins — <b>$${Number(state.bundle.price).toFixed(2)}</b>`;
+    `🪙 <b>${state.bundle.coins}</b> coins — <b>${pkr(state.bundle.price)}</b>`;
   $('card-grid').innerHTML = CARDS.map((c) => `
     <div class="pay-card ${c.cls}">
       <div class="brand">${c.name}</div>
       <div class="chip"></div>
       <div class="number">${c.number}</div>
       <div class="row"><span>HOLDER</span><span>TIKTOK COIN SHOP</span></div>
-      <div class="amount">$${Number(state.bundle.price).toFixed(2)}</div>
+      <div class="amount">${pkr(state.bundle.price)}</div>
       <button class="proceed" onclick="proceedCard('${c.name}')">Proceed</button>
     </div>`).join('');
 }
@@ -289,7 +292,7 @@ function showReceipt() {
 
   $('r-profile').innerHTML = miniProfileHTML(state.profile);
   $('r-coins').textContent = '🪙 ' + state.bundle.coins;
-  $('r-amount').textContent = '$' + Number(state.bundle.price).toFixed(2);
+  $('r-amount').textContent = pkr(state.bundle.price);
   $('r-card').textContent = state.card;
   $('r-order').textContent = 'TCS-' + Math.random().toString(36).slice(2, 8).toUpperCase();
     $('r-date').textContent = new Date().toLocaleString();
