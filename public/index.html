@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Coin Shop</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- drawer overlay -->
+  <div id="drawer-overlay" class="drawer-overlay" onclick="closeDrawers()"></div>
+
+  <!-- SETTINGS drawer (left) -->
+  <aside id="drawer-settings" class="drawer">
+    <div class="drawer-head">
+      <h3>⚙️ Settings</h3>
+      <button class="x" onclick="closeDrawers()">✕</button>
+    </div>
+    <p class="drawer-label">Order ka final result kya ho?</p>
+    <label class="radio"><input type="radio" name="result" value="Successful" checked> Successful</label>
+    <label class="radio"><input type="radio" name="result" value="Failed"> Failed</label>
+    <label class="radio"><input type="radio" name="result" value="Card Blocked"> Card Blocked</label>
+    <label class="radio"><input type="radio" name="result" value="Unauthorized"> Unauthorized</label>
+    <p class="hint">Receipt isi result ke mutabiq banegi.</p>
+  </aside>
+
+  <!-- CUSTOMIZE BUNDLE drawer (left) -->
+  <aside id="drawer-customize" class="drawer">
+    <div class="drawer-head">
+      <h3>➕ Customize Bundle</h3>
+      <button class="x" onclick="closeDrawers()">✕</button>
+    </div>
+    <p class="drawer-label">Apna bundle banao</p>
+    <input id="custom-coins" type="number" min="1" placeholder="Coins (e.g. 500)">
+    <input id="custom-price" type="number" min="0.01" step="0.01" placeholder="Price USD (e.g. 6.99)">
+    <button class="btn-primary" onclick="addCustomBundle()">Add Bundle</button>
+    <div id="custom-list"></div>
+  </aside>
+
+  <!-- ============ VIEW: LOGIN ============ -->
+  <div id="view-login" class="view">
+    <div class="login-card">
+      <div class="logo">🪙 <span>TikTok</span> Coin Shop</div>
+      <p class="muted">Login karke andar jao</p>
+      <input id="login-user" type="text" placeholder="Username" autocomplete="username">
+      <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
+      <div id="login-error" class="error"></div>
+      <button class="btn-primary" onclick="doLogin()">Login</button>
+    </div>
+  </div>
+
+  <!-- ============ VIEW: HOME (search + bundles) ============ -->
+  <div id="view-home" class="view">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn" onclick="openDrawer('settings')" title="Settings">⚙️</button>
+        <button class="icon-btn" onclick="openDrawer('customize')" title="Customize Bundle">➕</button>
+      </div>
+      <div class="logo small">🪙 <span>TikTok</span> Coin Shop</div>
+      <div class="topbar-right"></div>
+    </header>
+
+    <main class="home-main">
+      <div class="search-wrap">
+        <input id="search-input" type="text" placeholder="TikTok username ya profile link likho">
+        <button class="btn-primary" onclick="searchProfile()">Search</button>
+      </div>
+      <div id="search-error" class="error center"></div>
+
+      <!-- profile card -->
+      <div id="profile-card" class="profile-card hidden">
+        <img id="p-avatar" class="avatar" alt="profile" referrerpolicy="no-referrer"
+             onerror="this.style.display='none';document.getElementById('p-avatar-fallback').style.display='flex'">
+        <div id="p-avatar-fallback" class="avatar fallback" style="display:none">@</div>
+        <div class="p-info">
+          <div class="p-name"><span id="p-nickname"></span><span id="p-verified" class="verified hidden">✔</span></div>
+          <div id="p-username" class="p-user"></div>
+          <div id="p-bio" class="p-bio"></div>
+          <div class="p-stats">
+            <div><b id="p-followers"></b><span>Followers</span></div>
+            <div><b id="p-following"></b><span>Following</span></div>
+            <div><b id="p-likes"></b><span>Likes</span></div>
+            <div><b id="p-videos"></b><span>Videos</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- coin bundles -->
+      <h2 class="section-title">🪙 Coin Bundles</h2>
+      <div id="bundle-grid" class="bundle-grid"></div>
+    </main>
+  </div>
+
+  <!-- ============ VIEW: PAYMENT ============ -->
+  <div id="view-payment" class="view">
+    <header class="topbar">
+      <button class="icon-btn" onclick="goHome()">← Back</button>
+      <div class="logo small">💳 Payment Method</div>
+      <div class="topbar-right"></div>
+    </header>
+    <main class="narrow">
+      <div id="pay-profile" class="mini-profile"></div>
+      <div id="pay-summary" class="pay-summary"></div>
+      <div id="card-grid" class="card-grid"></div>
+    </main>
+  </div>
+
+  <!-- ============ VIEW: SENDING ANIMATION ============ -->
+  <div id="view-sending" class="view">
+    <main class="sending-wrap">
+      <div class="send-stage">
+        <img id="s-avatar" class="avatar big" alt="profile" referrerpolicy="no-referrer">
+        <div id="coin-layer" class="coin-layer"></div>
+      </div>
+      <h2 id="sending-text">Sending coins…</h2>
+      <div class="progress"><div id="send-bar" class="progress-bar"></div></div>
+    </main>
+  </div>
+
+  <!-- ============ VIEW: RECEIPT ============ -->
+  <div id="view-receipt" class="view">
+    <header class="topbar">
+      <div class="logo small">🧾 Receipt</div>
+    </header>
+    <main class="narrow">
+      <div class="receipt">
+        <div id="r-status" class="r-status"></div>
+        <div id="r-profile" class="mini-profile"></div>
+        <div class="r-rows">
+          <div class="r-row"><span>Coins</span><b id="r-coins"></b></div>
+          <div class="r-row"><span>Amount</span><b id="r-amount"></b></div>
+          <div class="r-row"><span>Card</span><b id="r-card"></b></div>
+          <div class="r-row"><span>Order ID</span><b id="r-order"></b></div>
+          <div class="r-row"><span>Date</span><b id="r-date"></b></div>
+        </div>
+        <p class="muted center">Keep this receipt for your records.</p>
+        <button class="btn-primary" onclick="goHome()">New Order</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
