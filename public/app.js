@@ -18,12 +18,11 @@ const DEFAULT_BUNDLES = [
 ];
 
 const CARDS = [
-  { id: 'master', name: 'MASTER', cls: 'master', number: '5421 •••• •••• 3456' },
-  { id: 'visa', name: 'VISA', cls: 'visa', number: '4111 •••• •••• 1111' },
-  { id: 'paypal', name: 'PAYPAL', cls: 'paypal', number: '6011 •••• •••• 0004' },
-  { id: 'amex', name: 'AMEX', cls: 'amex', number: '3782 •••••• 10005' },
+  { id: 'easypaisa', name: 'EASYPAISA', cls: 'easypaisa', number: '0345 •••• •••• 0000' },
+  { id: 'jazzcash', name: 'JAZZCASH', cls: 'jazzcash', number: '0300 •••• •••• 0000' },
+  { id: 'bank', name: 'BANK TRANSFER', cls: 'bank', number: 'PK36 •••• •••• •••• 0000' },
+  { id: 'paypal', name: 'PAYPAL', cls: 'paypal', number: 'user •••• @ ••••' },
 ];
-
 // ---------- helpers ----------
 function show(viewId) {
   document.querySelectorAll('.view').forEach((v) => v.classList.remove('active'));
