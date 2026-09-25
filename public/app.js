@@ -105,7 +105,7 @@ function renderCustomList() {
   const list = getCustomBundles();
   $('custom-list').innerHTML = list.length
     ? '<p class="drawer-label">Tumhare bundles</p>' + list.map((b, i) =>
-        `<div class="custom-item"><span>🪙 ${fmtCoins(b.coins)} — ${pkr(b.price)}</span><button onclick="removeCustomBundle(${i})">✕</button></div>`
+        `<div class="custom-item"><span><img class="coin-ico" src="coins.webp" alt=""> ${fmtCoins(b.coins)} — ${pkr(b.price)}</span><button onclick="removeCustomBundle(${i})">✕</button></div>`
       ).join('')
     : '<p class="hint">Abhi koi custom bundle nahi hai.</p>';
 }
@@ -196,7 +196,7 @@ function renderBundles() {
   const all = getCustomBundles();
   $('bundle-grid').innerHTML = all.length ? all.map((b, i) => `
     <div class="bundle" onclick="selectBundle(${i})">
-      <div class="coins">🪙</div>
+      <div class="coins"><img src="coins.webp" alt="coins"></div>
       <div class="cnum">${fmtCoins(b.coins)}</div>
       <div class="price">${pkr(b.price)}</div>
     </div>`).join('')
@@ -229,7 +229,7 @@ function miniProfileHTML(p) {
 function renderPayment() {
   $('pay-profile').innerHTML = miniProfileHTML(state.profile);
   $('pay-summary').innerHTML =
-    `🪙 <b>${fmtCoins(state.bundle.coins)}</b> coins — <b>${pkr(state.bundle.price)}</b>`;
+    `<img class="coin-ico" src="coins.webp" alt=""> <b>${fmtCoins(state.bundle.coins)}</b> coins — <b>${pkr(state.bundle.price)}</b>`;
   $('card-grid').innerHTML = CARDS.map((c) => `
     <div class="pay-card ${c.cls}">
       <div class="brand">${c.name}</div>
@@ -265,7 +265,7 @@ function runSending() {
     n++;
     const c = document.createElement('div');
     c.className = 'coin';
-    c.textContent = '🪙';
+    c.innerHTML = '<img src="coins.webp" alt="">';
     c.style.left = (20 + Math.random() * 60) + '%';
     c.style.animationDelay = (Math.random() * 0.4) + 's';
     layer.appendChild(c);
@@ -293,7 +293,7 @@ function showReceipt() {
   badge.textContent = label;
 
   $('r-profile').innerHTML = miniProfileHTML(state.profile);
-  $('r-coins').textContent = '🪙 ' + fmtCoins(state.bundle.coins);
+  $('r-coins').innerHTML = '<img class="coin-ico" src="coins.webp" alt=""> ' + fmtCoins(state.bundle.coins);
   $('r-amount').textContent = pkr(state.bundle.price);
   $('r-card').textContent = state.card;
   $('r-order').textContent = 'TCS-' + Math.random().toString(36).slice(2, 8).toUpperCase();
